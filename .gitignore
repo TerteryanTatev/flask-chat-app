@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Database (generated locally via `python db/db.py`)
+db/shop.db
+
+# Environment variables / secrets
+.env
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

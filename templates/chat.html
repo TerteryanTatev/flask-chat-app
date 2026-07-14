@@ -1,0 +1,219 @@
+<html>
+
+<head>
+    <title>Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div id="storyUploadModal" class="story-upload-modal">
+
+        <div class="story-upload-card" onclick="event.stopPropagation()">
+    
+            <h3>Նոր Story</h3>
+    
+            <input type="file" id="storyImage" accept="image/*">
+    
+            <button class='bb' onclick="createStory()">Upload</button>
+    
+        </div>
+    
+    </div>
+  <div id="postModal" class="post-modal-view" onclick="closePostModal(event)">
+    
+    <div class="post-modal-content">
+        <img id="postModalImg">
+        <div id="postModalText"></div>
+    </div>
+
+</div>
+    <div id="createPostModal" class="post-modal">
+
+        <div class="post-card">
+    
+            <span class="close-btn" onclick="closeCreatePost()">✖</span>
+    
+            <h3>Նոր փոստ</h3>
+    
+            <textarea id="postText" placeholder="Ինչ ես մտածում..."></textarea>
+    
+            <label class="file-label">
+                 Ընտրել նկար
+                <input type="file" id="postImage" accept="image/*">
+            </label>
+    
+            <button onclick="createPost()">Publish</button>
+    
+        </div>
+    
+    </div>
+
+    <div class="top-bar">
+
+        <div class="nav-left">
+            <span class="logo"> Chat</span>
+        </div>
+
+        <div class="nav-center">
+            <button class="nav-btn" title="Files" onclick="openFiles()">Files</button>
+            <button class="nav-btn" onclick="openProfile()" title="Profile">
+                Profile
+            </button>
+            <button class="nav-btn" onclick="openContacts()" title="Contacts">
+                Contacts
+            </button>
+            <div class="msg-actions">
+                <button id="delete" class="nav-btn" onclick="deleteSelected()">Delete</button>
+            </div>
+            <button class="nav-btn" onclick="openStoryUpload()" title="Add Story">
+                 Story
+            </button>
+            
+          
+            </div>
+
+
+
+
+        
+        <div id="filesPage" class="files-page" style="display:none;">
+            <div class="files-header">
+                <h3>Բոլոր նկարները</h3>
+                <button onclick="closeFiles()">✖</button>
+            </div>
+
+            <div id="filesList" class="files-list"></div>
+        </div>
+
+        <div id="contactsModal" class="contacts-modal">
+
+            <div class="contacts-card">
+
+                <div class="contacts-header">
+                    <h3>Contacts</h3>
+                    <span onclick="closeContacts()">✖</span>
+                </div>
+
+                <div id="contactsList" class="contacts-list"></div>
+
+            </div>
+
+        </div>
+
+        
+
+        <div id="imageModal" class="image-modal">
+            <span class="close-modal" onclick="closeImageModal()">✖</span>
+
+            <img id="modalImage">
+
+            <div class="modal-actions">
+                <button onclick="downloadImage()">Download</button>
+                <button  onclick="sendToChat()">Send</button>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <button class="nav-btn" onclick="toggleTheme()" title="Theme" id='theme-toggle'>Theme 🌙</button>
+            <span class="username">{{ session['username'] }}</span>
+            <button class="logout nav-btn" onclick="logout()">logout</button>
+        </div>
+
+    </div>
+<div class='d'>
+    <div id="storiesBar" class="stories-bar"> <div class="story-avatar ${hasUnseen ? "has-story" : "seen-story"}"></div></div>
+    <div id="storyModal" class="story-modal" onclick="closeStory()">
+    <img id="storyImg">
+    
+</div> </div>
+    <div class='body'>
+        <div id="chat-container" data-myid="{{ session['user_id'] }}">
+
+        </div>
+
+        <div class="container">
+
+            <div class="sidebar" id="chat-list"></div>
+
+
+            <div class="chat-main">
+               
+                
+                <div class="search">
+                    <input type="text" id="phone" placeholder="Enter phone">
+                    <button class='bb' onclick="findUser()">Find</button>
+                </div>
+                <div class="chat-header" id="chat-header">
+                    Ընտրեք user՝ խոսելու համար
+                </div>
+                <div id="messages" class="messages"></div>
+
+                <div class="send">
+                    <input type="text" id="message" placeholder="Message"
+                        onkeypress="if(event.key==='Enter'){sendMessage()}">
+                    <div class="file-upload">
+                        <label for="imageInput" class="file-label" id='file-label'>Նկար</label>
+                        <input type="file" id="imageInput" accept="image/*">
+                    </div>
+                    <button class='bb' onclick="sendMessage()">Send</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="profileModal" class="profile-modal">
+
+        <div class="profile-card">
+
+            <span class="close-profile" onclick="closeProfile()">✖</span>
+
+            <div class="profile-avatar" id="profileAvatar"></div>
+
+            <h3 id="profileUsername"></h3>
+
+            <p id="profilePhone"></p>
+
+            <p id="profileBio" class="profile-bio"></p>
+
+            <button id="profileSettingsBtn" class="profile-settings" onclick="openProfileSettings()">
+                Settings
+            </button>
+            <button id ='postBtn' class="create-post-btn" onclick="openCreatePost()">
+             Create Post
+            </button>
+            <div class="profile-actions">
+                <button id="blockBtn" class="block-btn"></button>
+            </div>
+            <div class="posts-wrapper">
+                <div id="postsContainer" class="posts-grid"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="profileSettings" class="profile-modal">
+
+        <div class="profile-card">
+
+            <span class='closeProfileSettings' onclick="closeProfileSettings()">✖</span>
+
+            <input type="file" id="avatarInput">
+
+            <input type="text" id="usernameInput">
+
+            <textarea id="bioInput"></textarea>
+
+            <button class = 'bb' onclick="saveProfile()">Save</button>
+
+        </div>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

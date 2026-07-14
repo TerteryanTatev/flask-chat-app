@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h2>Login with your phone number</h2>
+            
+            <form method="post" id="loginForm">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="phone" placeholder="Phone" required>
+                <button type="submit">Login</button>
+                {% if error %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(){
+            localStorage.setItem("username", document.querySelector('[name="username"]').value)
+            localStorage.setItem("phone", document.querySelector('[name="phone"]').value)
+         
+        })
+      
+            window.onload = function(){
+                let username = localStorage.getItem("username")
+                let phone = localStorage.getItem("phone")
+                
+                if(username && phone){
+                    document.querySelector('[name="username"]').value = username
+                    document.querySelector('[name="phone"]').value = phone
+                }
+            }
+
+            
+        </script>
+</body>
+</html>
