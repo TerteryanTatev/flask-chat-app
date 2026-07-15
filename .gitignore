@@ -9,7 +9,7 @@ venv/
 env/
 
 # Database (generated locally via `python db/db.py`)
-db/shop.db
+db/chat.db
 
 # Environment variables / secrets
 .env
